@@ -1,10 +1,9 @@
 "use client"
 
-import { SlideContainer } from "@/components/ui/slide-container"
+import { SlideBase } from "@/components/ui/slide-base"
 import { AccentLabel } from "@/components/ui/accent-label"
 import { StatDisplay } from "@/components/ui/stat-display"
 import { CoinAnimation } from "@/components/coin-animation"
-import { motion } from "framer-motion"
 import { useInView } from "@/hooks/use-in-view"
 
 interface BiggestApeData {
@@ -14,28 +13,24 @@ interface BiggestApeData {
 
 interface BiggestApeSlideProps {
   data: BiggestApeData
+  backgroundGroup?: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
 }
 
-export function BiggestApeSlide({ data }: BiggestApeSlideProps) {
+export function BiggestApeSlide({ data, backgroundGroup = 2, animationVariant = "slideUp" }: BiggestApeSlideProps) {
   const { ref, isInView } = useInView()
 
   return (
-    <SlideContainer ref={ref}>
+    <SlideBase backgroundGroup={backgroundGroup} animationVariant={animationVariant}>
       {/* Coin animation that only renders when the slide is in view */}
       {isInView && <CoinAnimation />}
 
-      <motion.div
-        className="flex flex-col items-center text-center max-w-4xl px-4 z-10 relative"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
+      <div ref={ref} className="z-10 relative">
         <AccentLabel>BIGGEST TOKEN APE</AccentLabel>
 
         {/* Large amount display - "$6400" */}
         <StatDisplay value={data.amount} prefix="$" />
-      </motion.div>
-    </SlideContainer>
+      </div>
+    </SlideBase>
   )
 }

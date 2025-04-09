@@ -1,7 +1,7 @@
 "use client"
 
+import { SlideBase } from "@/components/ui/slide-base"
 import { useEffect, useRef, useState } from "react"
-import { SlideContainer } from "@/components/ui/slide-container"
 
 interface FavoriteProtocolData {
   name: string
@@ -10,11 +10,17 @@ interface FavoriteProtocolData {
 
 interface FavoriteProtocolSlideProps {
   data: FavoriteProtocolData
+  backgroundGroup?: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
 }
 
-export function FavoriteProtocolSlide({ data }: FavoriteProtocolSlideProps) {
+export function FavoriteProtocolSlide({
+  data,
+  backgroundGroup = 3,
+  animationVariant = "fade",
+}: FavoriteProtocolSlideProps) {
   const [isInView, setIsInView] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
 
   // Create 6 blocks with alternating styles
   const blocks = [
@@ -57,8 +63,8 @@ export function FavoriteProtocolSlide({ data }: FavoriteProtocolSlideProps) {
   }, [])
 
   return (
-    <SlideContainer ref={sectionRef}>
-      <div className="flex flex-col items-center justify-center h-full w-full max-w-2xl mx-auto px-4">
+    <SlideBase backgroundGroup={backgroundGroup} animationVariant={animationVariant}>
+      <div ref={sectionRef} className="flex flex-col items-center justify-center h-full w-full max-w-2xl mx-auto px-4">
         <div className="flex flex-col items-center w-full">
           {/* Container div without border */}
           <div
@@ -149,6 +155,6 @@ export function FavoriteProtocolSlide({ data }: FavoriteProtocolSlideProps) {
           }
         }
       `}</style>
-    </SlideContainer>
+    </SlideBase>
   )
 }

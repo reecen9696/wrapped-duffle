@@ -1,17 +1,18 @@
 "use client"
 
-import { SlideContainer } from "@/components/ui/slide-container"
+import { SlideBase } from "@/components/ui/slide-base"
 import { BodyText } from "@/components/ui/body-text"
-import { motion } from "framer-motion"
 import { useInView } from "@/hooks/use-in-view"
 import { useAnimatedCounter } from "@/hooks/use-animated-counter"
 import type { ActiveDaysData } from "@/lib/api"
 
 interface ActiveDaysSlideProps {
   data: ActiveDaysData
+  backgroundGroup?: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
 }
 
-export function ActiveDaysSlide({ data }: ActiveDaysSlideProps) {
+export function ActiveDaysSlide({ data, backgroundGroup = 3, animationVariant = "slideUp" }: ActiveDaysSlideProps) {
   const { ref, isInView } = useInView({ threshold: 0.2 })
   const currentNumber = useAnimatedCounter({
     endValue: data.count,
@@ -49,16 +50,14 @@ export function ActiveDaysSlide({ data }: ActiveDaysSlideProps) {
   }
 
   return (
-    <SlideContainer>
+    <SlideBase backgroundGroup={backgroundGroup} animationVariant={animationVariant}>
       <div ref={ref} className="flex flex-col items-center justify-center text-center w-full max-w-4xl px-4 mx-auto">
-        <motion.div
+        <div
           className="text-white mb-2 font-inter font-extrabold text-stat-large leading-tight tracking-tighter"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          style={{ opacity: isInView ? 1 : 0, transition: "opacity 0.6s" }}
         >
           {currentNumber.toLocaleString()}
-        </motion.div>
+        </div>
 
         <BodyText className="mb-8" delay={0.5}>
           Number of active days
@@ -91,6 +90,6 @@ export function ActiveDaysSlide({ data }: ActiveDaysSlideProps) {
           }
         }
       `}</style>
-    </SlideContainer>
+    </SlideBase>
   )
 }

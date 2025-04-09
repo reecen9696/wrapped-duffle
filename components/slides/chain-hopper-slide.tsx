@@ -1,8 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { SlideBase } from "@/components/ui/slide-base"
 import { useEffect, useRef, useState } from "react"
-import { SlideContainer } from "@/components/ui/slide-container"
 
 interface ChainHopperData {
   chains: number
@@ -12,11 +11,13 @@ interface ChainHopperData {
 
 interface ChainHopperSlideProps {
   data: ChainHopperData
+  backgroundGroup?: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
 }
 
-export function ChainHopperSlide({ data }: ChainHopperSlideProps) {
+export function ChainHopperSlide({ data, backgroundGroup = 3, animationVariant = "slideUp" }: ChainHopperSlideProps) {
   const [isInView, setIsInView] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
   const maxCount = Math.max(...data.chainData.map((d) => d.count))
 
   // Use Intersection Observer to detect when the slide is in view
@@ -59,13 +60,8 @@ export function ChainHopperSlide({ data }: ChainHopperSlideProps) {
   const sortedChains = [...data.chainData].sort((a, b) => b.count - a.count)
 
   return (
-    <SlideContainer ref={sectionRef}>
-      <motion.div
-        className="flex flex-col items-center text-center max-w-4xl px-4"
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
-      >
+    <SlideBase backgroundGroup={backgroundGroup} animationVariant={animationVariant}>
+      <div ref={sectionRef}>
         <h2
           className="text-white mb-12"
           style={{
@@ -79,39 +75,31 @@ export function ChainHopperSlide({ data }: ChainHopperSlideProps) {
         </h2>
 
         {/* Circle layout container */}
-        <motion.div
+        <div
           className="flex flex-wrap justify-center gap-6 w-full max-w-3xl"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5 }}
+          style={{ opacity: isInView ? 1 : 0, transition: "opacity 0.5s" }}
         >
           {sortedChains.map((chain, i) => {
             const size = getCircleSize(chain.count)
 
             return (
-              <motion.div
+              <div
                 key={i}
                 className="flex items-center justify-center rounded-full"
                 style={{
                   width: `${size}px`,
                   height: `${size}px`,
                   backgroundColor: "#FF6E19",
-                }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                transition={{
-                  delay: 0.3 + i * 0.15, // Staggered delay
-                  duration: 0.7, // Slightly longer duration for smooth growth
-                  ease: "easeOut", // Simple ease out for smooth growth without bounce
+                  transform: `scale(${isInView ? 1 : 0})`,
+                  opacity: isInView ? 1 : 0,
+                  transition: `transform 0.7s ease-out ${0.3 + i * 0.15}s, opacity 0.7s ease-out ${0.3 + i * 0.15}s`,
                 }}
               >
-                <motion.div
+                <div
                   className="flex flex-col items-center justify-center"
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{
-                    delay: 0.3 + i * 0.15 + 0.2, // Text appears slightly after the circle
-                    duration: 0.3,
+                  style={{
+                    opacity: isInView ? 1 : 0,
+                    transition: `opacity 0.3s ease-out ${0.3 + i * 0.15 + 0.2}s`,
                   }}
                 >
                   <div
@@ -132,12 +120,12 @@ export function ChainHopperSlide({ data }: ChainHopperSlideProps) {
                   >
                     {chain.count}
                   </div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             )
           })}
-        </motion.div>
-      </motion.div>
-    </SlideContainer>
+        </div>
+      </div>
+    </SlideBase>
   )
 }

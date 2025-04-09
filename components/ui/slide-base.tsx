@@ -7,11 +7,9 @@ import { BackgroundRenderer } from "@/components/backgrounds/background-renderer
 import { getBackgroundByGroup } from "@/config/backgrounds"
 import type { BackgroundConfig } from "@/config/backgrounds"
 
-export type BackgroundType = "dark" | "light" | "gradient" | "stars" | "particles" | "noise" | "custom"
-
 export interface SlideBaseProps {
   children: ReactNode
-  backgroundGroup?: number
+  backgroundGroup: number // Make this required
   customBackground?: BackgroundConfig
   className?: string
   contentClassName?: string
@@ -21,7 +19,7 @@ export interface SlideBaseProps {
 
 export function SlideBase({
   children,
-  backgroundGroup = 1,
+  backgroundGroup,
   customBackground,
   className,
   contentClassName,
@@ -31,7 +29,7 @@ export function SlideBase({
   // Get background config from group or use custom
   const backgroundConfig = customBackground || getBackgroundByGroup(backgroundGroup)
 
-  // Animation variants
+  // Animation variants for content only (not background)
   const variants = {
     fade: {
       initial: { opacity: 0 },
@@ -64,7 +62,7 @@ export function SlideBase({
         className,
       )}
     >
-      {/* Background */}
+      {/* Background - fixed position, no animation */}
       <BackgroundRenderer config={backgroundConfig} />
 
       {/* Main content with animation */}

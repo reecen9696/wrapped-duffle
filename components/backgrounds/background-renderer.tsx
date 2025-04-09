@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
 import type { BackgroundConfig } from "@/config/backgrounds"
 
 interface BackgroundRendererProps {
@@ -19,26 +18,30 @@ export function BackgroundRenderer({ config, isActive = true }: BackgroundRender
 
   if (!mounted) return null
 
+  // No animations for backgrounds - they should appear/disappear instantly
+  // when switching between background groups
   const renderBackground = () => {
     switch (config.type) {
       case "solid":
         return (
-          <motion.div
+          <div
             className="absolute inset-0"
-            style={{ backgroundColor: config.color || "#0A0D11" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
+            style={{
+              backgroundColor: config.color || "#0A0D11",
+              opacity: isActive ? 1 : 0,
+              transition: "opacity 0.5s ease-in-out",
+            }}
           />
         )
 
       case "image":
         return (
-          <motion.div
+          <div
             className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
+            style={{
+              opacity: isActive ? 1 : 0,
+              transition: "opacity 0.5s ease-in-out",
+            }}
           >
             {config.imageUrl && (
               <Image
@@ -58,26 +61,28 @@ export function BackgroundRenderer({ config, isActive = true }: BackgroundRender
                 }}
               />
             )}
-          </motion.div>
+          </div>
         )
 
       case "gradient":
         return (
-          <motion.div
+          <div
             className="absolute inset-0 bg-gradient-to-b from-[#080A10] to-[#101420]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
+            style={{
+              opacity: isActive ? 1 : 0,
+              transition: "opacity 0.5s ease-in-out",
+            }}
           />
         )
 
       case "custom":
         return (
-          <motion.div
+          <div
             className={`absolute inset-0 ${config.className || ""}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
+            style={{
+              opacity: isActive ? 1 : 0,
+              transition: "opacity 0.5s ease-in-out",
+            }}
           >
             {config.imageUrl && (
               <Image
@@ -97,16 +102,17 @@ export function BackgroundRenderer({ config, isActive = true }: BackgroundRender
                 }}
               />
             )}
-          </motion.div>
+          </div>
         )
 
       default:
         return (
-          <motion.div
+          <div
             className="absolute inset-0 bg-[#0A0D11]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
+            style={{
+              opacity: isActive ? 1 : 0,
+              transition: "opacity 0.5s ease-in-out",
+            }}
           />
         )
     }

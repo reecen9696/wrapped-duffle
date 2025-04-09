@@ -1,20 +1,21 @@
 "use client"
 
+import { SlideBase } from "@/components/ui/slide-base"
 import { Button } from "@/components/ui/button"
 import { Share, Award } from "lucide-react"
-import { SlideBase } from "@/components/ui/slide-base"
 import { MetricRow } from "@/components/ui/metric-row"
 import type { FinalScoreData } from "@/lib/api"
 import { shareWrappedData } from "@/lib/api"
 import { useState } from "react"
 import { useWrappedData } from "@/context/wrapped-context"
-import { motion } from "framer-motion"
 
 interface FinalScoreSlideProps {
   data: FinalScoreData
+  backgroundGroup?: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
 }
 
-export function FinalScoreSlide({ data }: FinalScoreSlideProps) {
+export function FinalScoreSlide({ data, backgroundGroup = 1, animationVariant = "scale" }: FinalScoreSlideProps) {
   const [isSharing, setIsSharing] = useState(false)
   const { data: wrappedData } = useWrappedData()
 
@@ -56,14 +57,8 @@ export function FinalScoreSlide({ data }: FinalScoreSlideProps) {
       }
 
   return (
-    <SlideBase backgroundType="gradient" animationVariant="scale">
-      <motion.div
-        className="w-full max-w-3xl border border-white/10 rounded-xl p-6 overflow-hidden"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        viewport={{ once: true }}
-      >
+    <SlideBase backgroundGroup={backgroundGroup} animationVariant={animationVariant}>
+      <div className="w-full max-w-3xl border border-white/10 rounded-xl p-6 overflow-hidden">
         <div className="flex flex-col gap-4 mb-8">
           <MetricRow label="Owned wallet since" value={summaryData.walletAge} delay={0.4} />
           <MetricRow label="Total transactions" value={summaryData.transactions} delay={0.5} />
@@ -77,13 +72,7 @@ export function FinalScoreSlide({ data }: FinalScoreSlideProps) {
 
         <div className="w-full border-t border-white/10 my-6"></div>
 
-        <motion.div
-          className="flex flex-col items-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
-          viewport={{ once: true }}
-        >
+        <div className="flex flex-col items-center">
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-6 h-6 text-accent" />
             <div className="text-accent text-xl font-bold">FINAL SCORE</div>
@@ -101,16 +90,10 @@ export function FinalScoreSlide({ data }: FinalScoreSlideProps) {
               Rank: <span className="font-semibold text-accent">{data.rank}</span>
             </div>
           )}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5 }}
-        viewport={{ once: true }}
-        className="mt-6"
-      >
+      <div className="mt-6">
         <Button
           onClick={handleShare}
           disabled={isSharing}
@@ -119,7 +102,7 @@ export function FinalScoreSlide({ data }: FinalScoreSlideProps) {
           <Share className="w-5 h-5" />
           {isSharing ? "Sharing..." : "Share your profile"}
         </Button>
-      </motion.div>
+      </div>
     </SlideBase>
   )
 }
