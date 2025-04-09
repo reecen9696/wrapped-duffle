@@ -1,0 +1,170 @@
+import type React from "react"
+
+import { IntroSlide } from "@/components/slides/intro-slide"
+import { RewindSlide } from "@/components/slides/rewind-slide"
+import { WalletOriginSlide } from "@/components/slides/wallet-origin-slide"
+import { FirstActionSlide } from "@/components/slides/first-action-slide"
+import { BeenAroundSlide } from "@/components/slides/been-around-slide"
+import { ChainHopperSlide } from "@/components/slides/chain-hopper-slide"
+import { TotalSwappedSlide } from "@/components/slides/total-swapped-slide"
+import { ActiveDaysSlide } from "@/components/slides/active-days-slide"
+import { FavoriteProtocolSlide } from "@/components/slides/favorite-protocol-slide"
+import { UnhingedPlaysSlide } from "@/components/slides/unhinged-plays-slide"
+import { BiggestApeSlide } from "@/components/slides/biggest-ape-slide"
+import { NftDegeneracySlide } from "@/components/slides/nft-degeneracy-slide"
+import { WhatYouSaidSlide } from "@/components/slides/what-you-said-slide"
+import { SocialScoreSlide } from "@/components/slides/social-score-slide"
+import { FinalScoreSlide } from "@/components/slides/final-score-slide"
+
+export enum SlideType {
+  INTRO = "intro",
+  WALLET_ORIGIN = "wallet_origin",
+  FIRST_ACTION = "first_action",
+  BEEN_AROUND = "been_around",
+  CHAIN_HOPPER = "chain_hopper",
+  TOTAL_TRANSACTIONS = "total_transactions",
+  ACTIVE_DAYS = "active_days",
+  FAVORITE_PROTOCOL = "favorite_protocol",
+  UNHINGED_PLAYS = "unhinged_plays",
+  BIGGEST_APE = "biggest_ape",
+  NFT_DEGENERACY = "nft_degeneracy",
+  WHAT_YOU_SAID = "what_you_said",
+  SOCIAL_SCORE = "social_score",
+  FINAL_SCORE = "final_score",
+  REWIND = "rewind",
+}
+
+export interface SlideConfig {
+  id: SlideType
+  component: React.ComponentType<any>
+  title: string
+  description: string
+  dataKey?: string
+  enabled: boolean
+}
+
+export const slidesConfig: SlideConfig[] = [
+  {
+    id: SlideType.INTRO,
+    component: IntroSlide,
+    title: "Intro",
+    description: "Introduction slide with 'It. Is. Here.' text",
+    enabled: true,
+  },
+  {
+    id: SlideType.REWIND,
+    component: RewindSlide,
+    title: "Rewind",
+    description: "Let's rewind to where it all began...",
+    enabled: true,
+  },
+  {
+    id: SlideType.WALLET_ORIGIN,
+    component: WalletOriginSlide,
+    title: "Wallet Origin",
+    description: "When the wallet was created",
+    dataKey: "walletOrigin",
+    enabled: true,
+  },
+  {
+    id: SlideType.FIRST_ACTION,
+    component: FirstActionSlide,
+    title: "First Action",
+    description: "First swap action",
+    dataKey: "firstAction",
+    enabled: true,
+  },
+  {
+    id: SlideType.BEEN_AROUND,
+    component: BeenAroundSlide,
+    title: "Been Around",
+    description: "You've been around...",
+    enabled: true,
+  },
+  {
+    id: SlideType.CHAIN_HOPPER,
+    component: ChainHopperSlide,
+    title: "Chain Hopper",
+    description: "Chains interacted with",
+    dataKey: "chainHopper",
+    enabled: true,
+  },
+  {
+    id: SlideType.TOTAL_TRANSACTIONS,
+    component: TotalSwappedSlide,
+    title: "Total Transactions",
+    description: "Total number of transactions",
+    dataKey: "transactions",
+    enabled: true,
+  },
+  {
+    id: SlideType.ACTIVE_DAYS,
+    component: ActiveDaysSlide,
+    title: "Active Days",
+    description: "Number of active days",
+    dataKey: "activeDays",
+    enabled: true,
+  },
+  {
+    id: SlideType.FAVORITE_PROTOCOL,
+    component: FavoriteProtocolSlide,
+    title: "Favorite Protocol",
+    description: "Most used protocol",
+    dataKey: "favoriteProtocol",
+    enabled: true,
+  },
+  {
+    id: SlideType.UNHINGED_PLAYS,
+    component: UnhingedPlaysSlide,
+    title: "Unhinged Plays",
+    description: "Let's relive your most unhinged plays...",
+    enabled: true,
+  },
+  {
+    id: SlideType.BIGGEST_APE,
+    component: BiggestApeSlide,
+    title: "Biggest Ape",
+    description: "Biggest token ape",
+    dataKey: "biggestApe",
+    enabled: true,
+  },
+  {
+    id: SlideType.NFT_DEGENERACY,
+    component: NftDegeneracySlide,
+    title: "NFT Degeneracy",
+    description: "NFTs minted",
+    dataKey: "nftDegeneracy",
+    enabled: true,
+  },
+  {
+    id: SlideType.WHAT_YOU_SAID,
+    component: WhatYouSaidSlide,
+    title: "What You Said",
+    description: "It's not just what you did it's what you said...",
+    enabled: true,
+  },
+  {
+    id: SlideType.SOCIAL_SCORE,
+    component: SocialScoreSlide,
+    title: "Social Score",
+    description: "Social media presence",
+    dataKey: "socialScore",
+    enabled: true,
+  },
+  {
+    id: SlideType.FINAL_SCORE,
+    component: FinalScoreSlide,
+    title: "Final Score",
+    description: "Final summary and score",
+    dataKey: "finalScore",
+    enabled: true,
+  },
+]
+
+export const getEnabledSlides = () => {
+  return slidesConfig.filter((slide) => slide.enabled)
+}
+
+export const getSlideById = (id: SlideType) => {
+  return slidesConfig.find((slide) => slide.id === id)
+}
