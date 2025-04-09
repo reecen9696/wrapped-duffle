@@ -41,23 +41,43 @@ export interface SlideConfig {
   description: string
   dataKey?: string
   enabled: boolean
+  backgroundGroup: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
 }
 
+// Background assignments based on user requirements:
+// Page 1 & 2 - #0A0D11 (Group 1)
+// Page 3 & 4 - light orange (Group 2)
+// Page 5 - #0A0D11 (Group 1)
+// Page 6, 7, 8, 9 - Blue (Group 3)
+// Page 10 - #0A0D11 (Group 1)
+// Page 11, 12 - light orange (Group 2)
+// Page 13 - #0A0D11 (Group 1)
+// Page 14 - Blue (Group 3)
+// Page 15 - #0A0D11 (Group 1)
+
 export const slidesConfig: SlideConfig[] = [
+  // Page 1 - Dark
   {
     id: SlideType.INTRO,
     component: IntroSlide,
     title: "Intro",
     description: "Introduction slide with 'It. Is. Here.' text",
     enabled: true,
+    backgroundGroup: 1,
+    animationVariant: "fade",
   },
+  // Page 2 - Dark
   {
     id: SlideType.REWIND,
     component: RewindSlide,
     title: "Rewind",
     description: "Let's rewind to where it all began...",
     enabled: true,
+    backgroundGroup: 1,
+    animationVariant: "slideUp",
   },
+  // Page 3 - Light Orange
   {
     id: SlideType.WALLET_ORIGIN,
     component: WalletOriginSlide,
@@ -65,7 +85,10 @@ export const slidesConfig: SlideConfig[] = [
     description: "When the wallet was created",
     dataKey: "walletOrigin",
     enabled: true,
+    backgroundGroup: 2,
+    animationVariant: "slideUp",
   },
+  // Page 4 - Light Orange
   {
     id: SlideType.FIRST_ACTION,
     component: FirstActionSlide,
@@ -73,14 +96,20 @@ export const slidesConfig: SlideConfig[] = [
     description: "First swap action",
     dataKey: "firstAction",
     enabled: true,
+    backgroundGroup: 2,
+    animationVariant: "slideUp",
   },
+  // Page 5 - Dark
   {
     id: SlideType.BEEN_AROUND,
     component: BeenAroundSlide,
     title: "Been Around",
     description: "You've been around...",
     enabled: true,
+    backgroundGroup: 1,
+    animationVariant: "fade",
   },
+  // Page 6 - Blue
   {
     id: SlideType.CHAIN_HOPPER,
     component: ChainHopperSlide,
@@ -88,7 +117,10 @@ export const slidesConfig: SlideConfig[] = [
     description: "Chains interacted with",
     dataKey: "chainHopper",
     enabled: true,
+    backgroundGroup: 3,
+    animationVariant: "slideUp",
   },
+  // Page 7 - Blue
   {
     id: SlideType.TOTAL_TRANSACTIONS,
     component: TotalSwappedSlide,
@@ -96,7 +128,10 @@ export const slidesConfig: SlideConfig[] = [
     description: "Total number of transactions",
     dataKey: "transactions",
     enabled: true,
+    backgroundGroup: 3,
+    animationVariant: "slideUp",
   },
+  // Page 8 - Blue
   {
     id: SlideType.ACTIVE_DAYS,
     component: ActiveDaysSlide,
@@ -104,7 +139,10 @@ export const slidesConfig: SlideConfig[] = [
     description: "Number of active days",
     dataKey: "activeDays",
     enabled: true,
+    backgroundGroup: 3,
+    animationVariant: "slideUp",
   },
+  // Page 9 - Blue
   {
     id: SlideType.FAVORITE_PROTOCOL,
     component: FavoriteProtocolSlide,
@@ -112,14 +150,20 @@ export const slidesConfig: SlideConfig[] = [
     description: "Most used protocol",
     dataKey: "favoriteProtocol",
     enabled: true,
+    backgroundGroup: 3,
+    animationVariant: "fade",
   },
+  // Page 10 - Dark
   {
     id: SlideType.UNHINGED_PLAYS,
     component: UnhingedPlaysSlide,
     title: "Unhinged Plays",
     description: "Let's relive your most unhinged plays...",
     enabled: true,
+    backgroundGroup: 1,
+    animationVariant: "fade",
   },
+  // Page 11 - Light Orange
   {
     id: SlideType.BIGGEST_APE,
     component: BiggestApeSlide,
@@ -127,7 +171,10 @@ export const slidesConfig: SlideConfig[] = [
     description: "Biggest token ape",
     dataKey: "biggestApe",
     enabled: true,
+    backgroundGroup: 2,
+    animationVariant: "slideUp",
   },
+  // Page 12 - Light Orange
   {
     id: SlideType.NFT_DEGENERACY,
     component: NftDegeneracySlide,
@@ -135,14 +182,20 @@ export const slidesConfig: SlideConfig[] = [
     description: "NFTs minted",
     dataKey: "nftDegeneracy",
     enabled: true,
+    backgroundGroup: 2,
+    animationVariant: "slideUp",
   },
+  // Page 13 - Dark
   {
     id: SlideType.WHAT_YOU_SAID,
     component: WhatYouSaidSlide,
     title: "What You Said",
     description: "It's not just what you did it's what you said...",
     enabled: true,
+    backgroundGroup: 1,
+    animationVariant: "fade",
   },
+  // Page 14 - Blue
   {
     id: SlideType.SOCIAL_SCORE,
     component: SocialScoreSlide,
@@ -150,7 +203,10 @@ export const slidesConfig: SlideConfig[] = [
     description: "Social media presence",
     dataKey: "socialScore",
     enabled: true,
+    backgroundGroup: 3,
+    animationVariant: "slideUp",
   },
+  // Page 15 - Dark
   {
     id: SlideType.FINAL_SCORE,
     component: FinalScoreSlide,
@@ -158,6 +214,8 @@ export const slidesConfig: SlideConfig[] = [
     description: "Final summary and score",
     dataKey: "finalScore",
     enabled: true,
+    backgroundGroup: 1,
+    animationVariant: "scale",
   },
 ]
 
@@ -167,4 +225,9 @@ export const getEnabledSlides = () => {
 
 export const getSlideById = (id: SlideType) => {
   return slidesConfig.find((slide) => slide.id === id)
+}
+
+export const getBackgroundForSlide = (slideId: SlideType) => {
+  const slide = getSlideById(slideId)
+  return slide ? { group: slide.backgroundGroup } : { group: 1 }
 }

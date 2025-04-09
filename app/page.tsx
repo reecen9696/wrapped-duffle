@@ -25,11 +25,6 @@ function WrappedExperience() {
 
   return (
     <main ref={containerRef} className="h-screen w-full overflow-y-scroll snap-y snap-mandatory relative">
-      {/* Background image that covers the entire page */}
-      <div className="fixed inset-0 w-full h-full z-0">
-        <Image src="/images/background.png" alt="Background" fill priority className="object-cover" />
-      </div>
-
       {/* Content slides - dynamically rendered from config */}
       <div className="relative z-10">
         {enabledSlides.map((slideConfig) => {
@@ -37,11 +32,18 @@ function WrappedExperience() {
           // Pass the appropriate data prop if dataKey is specified
           const slideProps = slideConfig.dataKey ? { data: data[slideConfig.dataKey] } : {}
 
-          return <SlideComponent key={slideConfig.id} {...slideProps} />
+          return (
+            <SlideComponent
+              key={slideConfig.id}
+              {...slideProps}
+              backgroundGroup={slideConfig.backgroundGroup}
+              animationVariant={slideConfig.animationVariant}
+            />
+          )
         })}
       </div>
 
-      {/* Static overlay with 20% opacity */}
+      {/* Static overlay with 20% opacity - applied globally */}
       <div className="fixed inset-0 w-full h-full z-20 pointer-events-none opacity-20">
         <Image src="/images/static.svg" alt="Static Overlay" fill className="object-cover" />
       </div>

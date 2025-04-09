@@ -1,15 +1,20 @@
 "use client"
 
-import { SlideContainer } from "@/components/ui/slide-container"
+import { SlideBase } from "@/components/ui/slide-base"
 import { SectionHeading } from "@/components/ui/section-heading"
 
-export function IntroSlide() {
+interface IntroSlideProps {
+  backgroundGroup?: number
+  animationVariant?: "fade" | "slideUp" | "scale" | "none"
+}
+
+export function IntroSlide({ backgroundGroup = 1, animationVariant = "fade" }: IntroSlideProps) {
   return (
-    <SlideContainer>
+    <SlideBase backgroundGroup={backgroundGroup} animationVariant={animationVariant}>
       <div className="flex flex-col items-center text-center">
         <SectionHeading className="mb-1">It. Is. Here.</SectionHeading>
         <SectionHeading delay={1.1}>Your on chain wrapped!</SectionHeading>
       </div>
-    </SlideContainer>
+    </SlideBase>
   )
 }
